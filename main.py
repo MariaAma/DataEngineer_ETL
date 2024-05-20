@@ -67,7 +67,8 @@ if __name__ == '__main__':
         engine = sqlalchemy.create_engine(db_url)
         connection = engine.connect()
         #extract data: result = pd.read_sql_query('SELECT * FROM recently_tracks', connection)
-        songs_dataframe.to_sql(name= 'recently_tracks', con=engine, index= False, if_exists='append')
+        #database already exists in my computer, otherwise; mysql.connector.connect(..).cursor().execute(...) ...
+        songs_dataframe.to_sql('recently_tracks', con=engine, index= False, if_exists='append')
         connection.close
 
          
