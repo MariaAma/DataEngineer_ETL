@@ -2,7 +2,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import pandas as pd
 import sqlalchemy 
-import mysql.connector
+#import mysql.connector
 
 #you need your Client Id and your Client Secret from your spotify account
 client_id =  'yourClientId'
