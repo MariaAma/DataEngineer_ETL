@@ -16,17 +16,15 @@ def check_if_valid_data(df: pd.DataFrame):
         #transform data
         if df.empty:
                 print('There\'s no songs in the Dataframe.')
-                return False
-        
-        if not isinstance(df['track_time'], pd.Series):
+                
+        if any((df['track_time']).duplicated(keep=False)):
                 raise Exception('The primary key is not unique in  the Dataset.')
-        else:
-                pass
+
 
         if df.isnull().values.any():
-                raise Exception('There\'s empty values in  the Dataset.')
-        #
-
+                raise Exception('There\'s empty values in  the Dataset.')        
+        return True
+        
 if __name__ == '__main__':
         #extract data
         track_artist = []
