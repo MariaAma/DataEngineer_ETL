@@ -22,7 +22,8 @@ def check_if_valid_data(df: pd.DataFrame):
 
 
         if df.isnull().values.any():
-                raise Exception('There\'s empty values in  the Dataset.')        
+                raise Exception('There\'s empty values in  the Dataset.')    
+                
         return True
         
 if __name__ == '__main__':
