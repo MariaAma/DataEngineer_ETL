@@ -40,7 +40,7 @@ if __name__ == '__main__':
                                 )
         top_tracks = sp.current_user_recently_played(limit=50)
 
-        for idx, item in enumerate(top_tracks['items']):
+        for item in top_tracks['items']:
 
                 track = item['track']
                 track_artist.append(track['artists'][0]['name'])
