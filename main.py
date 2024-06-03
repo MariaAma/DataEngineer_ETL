@@ -54,7 +54,6 @@ if __name__ == '__main__':
         }
 
         songs_dataframe = pd.DataFrame(song_dict, columns=['track_name', 'track_artist', 'track_time'])
-        print(songs_dataframe)
                 
         #transform data
         if check_if_valid_data(songs_dataframe):
