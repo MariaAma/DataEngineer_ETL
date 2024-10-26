@@ -12,22 +12,31 @@ redirect_uri = "http://localhost:3000"
 #you need the username and password for your MySQL connection, as well as the name of the database you want to connect to
 db_url ='mysql+mysqlconnector://mysqlusername:mysqlpassword@localhost:3306/databasename'
 
-def check_if_valid_data(df: pd.DataFrame):
-        #transform data
+def transformation(df: pd.DataFrame):
         if df.empty:
-                print('There\'s no songs in the Dataframe.')
+                return False
                 
         if any((df['track_time']).duplicated(keep=False)):
-                raise Exception('The primary key is not unique in  the Dataset.')
+                raise Exception('The primary key is not unique in the Dataset.')
 
 
         if df.isnull().values.any():
-                raise Exception('There\'s empty values in  the Dataset.')    
-                
+                raise Exception('There\'s empty values in  the Dataset.')       
         return True
-        
+
+def loading(db : str):
+        try:
+                engine = sqlalchemy.create_engine(db)
+                connection = engine.connect()
+                #result = pd.read_sql_query('SELECT * FROM recently_tracks', connection)
+                songs_data.to_sql(name= 'recently_tracks', con=engine, index=False, if_exists='replace')
+                connection.close()
+                return True
+        except:
+                return False
+
 if __name__ == '__main__':
-        #extract data
+        #
         track_artist = []
         track_name = []
         track_time = []
@@ -36,6 +45,7 @@ if __name__ == '__main__':
                                 auth_manager=SpotifyOAuth(client_id= client_id,
                                                         client_secret=client_secret,
                                                         redirect_uri= redirect_uri,
+                                                        cache_path="token.txt",
                                                         scope='user-read-recently-played')
                                 )
         top_tracks = sp.current_user_recently_played(limit=50)
@@ -53,19 +63,17 @@ if __name__ == '__main__':
                 'track_time': track_time
         }
 
-        songs_dataframe = pd.DataFrame(song_dict, columns=['track_name', 'track_artist', 'track_time'])
+        songs_data = pd.DataFrame(song_dict, columns=['track_name', 'track_artist', 'track_time'])
                 
-        #transform data
-        if check_if_valid_data(songs_dataframe):
-                print('Data can now be loaded into a Database.')
+        #
+        if transformation(songs_data):
+                print('Data can now be loaded into the Database.')
+                #On-Premises
+                if loading(db_url):
+                        print("Data has been loaded into the Database.")
+                else:
+                        print("There was an error connecting to the Database.")
+        else:
+                print("There are no songs in the DataFrame.")
 
 
-        #load data on-premise database
-        engine = sqlalchemy.create_engine(db_url)
-        connection = engine.connect()
-        #extract data: result = pd.read_sql_query('SELECT * FROM recently_tracks', connection)
-        #database already exists in my computer, otherwise; mysql.connector.connect(..).cursor().execute(...) ...
-        songs_dataframe.to_sql('recently_tracks', con=engine, index= False, if_exists='append')
-        connection.close
-
-         
