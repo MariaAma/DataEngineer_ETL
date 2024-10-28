@@ -48,15 +48,18 @@ if __name__ == '__main__':
         track_name = []
         track_time = []
 
-        sp = spotipy.Spotify(
-                                auth_manager=SpotifyOAuth(client_id= client_id,
-                                                        client_secret=client_secret,
-                                                        redirect_uri= redirect_uri,
-                                                        cache_path="token.txt",
-                                                        scope='user-read-recently-played')
-                                )
-        top_tracks = sp.current_user_recently_played(limit=50)
-
+        try:
+                sp = spotipy.Spotify(
+                                        auth_manager=SpotifyOAuth(client_id= client_id,
+                                                                client_secret=client_secret,
+                                                                redirect_uri= redirect_uri,
+                                                                cache_path="token.txt",
+                                                                scope='user-read-recently-played')
+                                        )
+                top_tracks = sp.current_user_recently_played(limit=50)
+        except:
+                print("Something went wrong with the Server Request! Check the Extract Process")
+                
         for item in top_tracks['items']:
 
                 track = item['track']
