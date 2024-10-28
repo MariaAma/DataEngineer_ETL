@@ -2,12 +2,19 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import pandas as pd
 import sqlalchemy 
+import os
+from dotenv import load_dotenv 
 #import mysql.connector
 
-#you need your Client Id and your Client Secret from your spotify account
-client_id =  'yourClientId'
-client_secret = "yourClientSecret"
-redirect_uri = "http://localhost:3000"
+load_dotenv() 
+client_id =  os.getenv("client_id")
+client_secret = os.getenv("client_secret")
+redirect_uri = os.getenv("redirect_uri")
+
+#or without .env file
+#client_id =  'yourClientId'
+#client_secret = "yourClientSecret"
+#redirect_uri = "http://localhost:3000"
 
 #you need the username and password for your MySQL connection, as well as the name of the database you want to connect to
 db_url ='mysql+mysqlconnector://mysqlusername:mysqlpassword@localhost:3306/databasename'
