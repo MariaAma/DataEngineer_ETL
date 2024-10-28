@@ -16,7 +16,7 @@ redirect_uri = os.getenv("redirect_uri")
 #client_secret = "yourClientSecret"
 #redirect_uri = "http://localhost:3000"
 
-#you need the username and password for your MySQL connection, as well as the name of the database you want to connect to
+#your username and your password for your MySQL connection, as well as the name of the database you want to connect to
 db_url ='mysql+mysqlconnector://mysqlusername:mysqlpassword@localhost:3306/databasename'
 
 def transformation(df: pd.DataFrame):
@@ -26,10 +26,10 @@ def transformation(df: pd.DataFrame):
         if any((df['track_time']).duplicated(keep=False)):
                 raise Exception('The primary key is not unique in the Dataset.')
 
-
         if df.isnull().values.any():
                 raise Exception('There\'s empty values in  the Dataset.')       
         return True
+
 
 def loading(db : str):
         try:
@@ -41,6 +41,7 @@ def loading(db : str):
                 return True
         except:
                 return False
+
 
 if __name__ == '__main__':
         #
@@ -58,7 +59,7 @@ if __name__ == '__main__':
                                         )
                 top_tracks = sp.current_user_recently_played(limit=50)
         except:
-                print("Something went wrong with the Server Request! Check the Extract Process")
+                print("Something went wrong with the Server Request!")
                 
         for item in top_tracks['items']:
 
