@@ -11,15 +11,10 @@ client_id =  os.getenv("client_id")
 client_secret = os.getenv("client_secret")
 redirect_uri = os.getenv("redirect_uri")
 
-#or without .env file
-#client_id =  'yourClientId'
-#client_secret = "yourClientSecret"
-#redirect_uri = "http://localhost:3000"
-
-#your username and your password for your MySQL connection, as well as the name of the database you want to connect to
+#username and password for your MySQL connection, as well as the name of the database you want to connect to
 db_url ='mysql+mysqlconnector://mysqlusername:mysqlpassword@localhost:3306/databasename'
 
-def transformation(df: pd.DataFrame):
+def transformation(df: pd.DataFrame):        
         if df.empty:
                 return False
                 
@@ -79,12 +74,10 @@ if __name__ == '__main__':
         #
         if transformation(songs_data):
                 print('Data can now be loaded into the Database.')
-                #On-Premises
                 if loading(db_url):
                         print("Data has been loaded into the Database.")
                 else:
                         print("There was an error connecting to the Database.")
         else:
                 print("There are no songs in the DataFrame.")
-
 
